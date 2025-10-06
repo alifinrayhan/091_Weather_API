@@ -97,3 +97,22 @@
           alert("Lokasi tidak ditemukan!");
           return;
         }
+        // Tampilkan hasil
+        infoCuaca.innerHTML = `
+          <p>Negara: ${data.sys.country}</p>
+          <p>Provinsi: ${data.name}</p>
+          <p>Kecamatan: (Data tidak tersedia dari API)</p>
+          <p>Suhu: ${data.main.temp} °C</p>
+          <p>Kelembaban: ${data.main.humidity}%</p>
+          <p>Latitude: ${data.coord.lat}</p>
+          <p>Longitude: ${data.coord.lon}</p>
+        `;
+      } catch (error) {
+        alert("Terjadi kesalahan saat mengambil data cuaca.");
+        console.error(error);
+      }
+    }
+  </script>
+
+</body>
+</html>
