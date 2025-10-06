@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Cek Info Cuaca</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background: linear-gradient(#7dd3fc, #38bdf8);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 20px;
+      color: #1e293b;
+    }
+    h1 {
+      margin-bottom: 20px;
+    }
+    .container {
+      background: #fff;
+      padding: 20px;
+      border-radius: 16px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      width: 350px;
+      text-align: left;
+    }
+    label, input, button {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    input {
+      padding: 10px;
+      border: 1px solid #94a3b8;
+      border-radius: 8px;
+    }
+    button {
+      padding: 10px;
+      background: #0284c7;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #0369a1;
+    }
+    .info p {
+      margin: 6px 0;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🌦️ Cek Info Cuaca</h1>
+
+  <div class="container">
+    <label for="lokasi">Lokasi:</label>
+    <input type="text" id="lokasi" placeholder="Masukkan nama kota...">
+    <button onclick="getWeather()">Get</button>
+
+    <div class="info" id="infoCuaca">
+      <p>Negara: </p>
+      <p>Provinsi: </p>
+      <p>Kecamatan: </p>
+      <p>Suhu: </p>
+      <p>Kelembaban: </p>
+      <p>Latitude: </p>
+      <p>Longitude: </p>
+    </div>
+  </div>
+
+  <script>
+    const apiKey = "MASUKKAN_API_KEY_ANDA"; // 🔑 Ganti dengan API key dari OpenWeatherMap
+
+    async function getWeather() {
+      const lokasi = document.getElementById("lokasi").value;
+      const infoCuaca = document.getElementById("infoCuaca");
+
+      if (!lokasi) {
+        alert("Masukkan nama kota terlebih dahulu!");
+        return;
+      }
+
+      try {
+        // Panggil API cuaca
+        const response = await fetch(
+          `https://api.openweathermap.org/data/2.5/weather?q=${lokasi}&appid=${apiKey}&units=metric&lang=id`
+        );
+        const data = await response.json();
+
+        if (data.cod !== 200) {
+          alert("Lokasi tidak ditemukan!");
+          return;
+        }
+
+        // Tampilkan hasil
+        infoCuaca.innerHTML = `
+          <p>Negara: ${data.sys.country}</p>
+          <p>Provinsi: ${data.name}</p>
+          <p>Kecamatan: (Data tidak tersedia dari API)</p>
+          <p>Suhu: ${data.main.temp} °C</p>
+          <p>Kelembaban: ${data.main.humidity}%</p>
+          <p>Latitude: ${data.coord.lat}</p>
+          <p>Longitude: ${data.coord.lon}</p>
+        `;
+      } catch (error) {
+        alert("Terjadi kesalahan saat mengambil data cuaca.");
+        console.error(error);
+      }
+    }
+  </script>
+
+</body>
+</html>
